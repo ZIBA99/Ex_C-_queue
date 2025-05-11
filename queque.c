@@ -1,40 +1,46 @@
 #include <stdio.h>
 #include <string.h>
 
-#define MAX 10000 // 스택의 최대 크기
+#define MAX 10000 // 큐의 최대 크기
 
-int stack[MAX];  // 스택을 저장할 배열
-int top = -1;    // 스택의 가장 위를 가리키는 인덱스 (비어있을 때는 -1)
+int queue[MAX];       // 큐를 저장할 배열
+int front = 0, rear = 0; // front: 큐의 앞, rear: 큐의 뒤
 
 int main() {
     int n, val;
-    char cmd[6]; // 명령어를 저장할 문자열
-    scanf("%d", &n); // 명령어의 개수 입력
+    char cmd[6]; // 명령어 저장
+    scanf("%d", &n); // 명령어 개수 입력
 
     while (n--) {
         scanf("%s", cmd); // 명령어 입력
 
         if (strcmp(cmd, "push") == 0) { // push 명령
-            scanf("%d", &val);          // 푸시할 값 입력
-            stack[++top] = val;         // 스택에 값 저장
+            scanf("%d", &val);          // 큐에 넣을 값 입력
+            queue[rear++] = val;        // rear에 값 저장 후 rear 증가
         } 
         else if (strcmp(cmd, "pop") == 0) { // pop 명령
-            if (top == -1)                 // 스택이 비어있다면
+            if (front == rear)              // 큐가 비어 있으면
                 printf("-1\n");
             else
-                printf("%d\n", stack[top--]); // 가장 위의 값 출력 후 제거
+                printf("%d\n", queue[front++]); // front 값 출력 후 front 증가
         } 
         else if (strcmp(cmd, "size") == 0) { // size 명령
-            printf("%d\n", top + 1);         // 현재 스택의 크기 출력
+            printf("%d\n", rear - front);   // 큐의 크기 = rear - front
         } 
         else if (strcmp(cmd, "empty") == 0) { // empty 명령
-            printf("%d\n", top == -1 ? 1 : 0); // 비어있으면 1, 아니면 0
+            printf("%d\n", front == rear ? 1 : 0); // 비어있으면 1, 아니면 0
         } 
-        else if (strcmp(cmd, "top") == 0) { // top 명령
-            if (top == -1)
+        else if (strcmp(cmd, "front") == 0) { // front 명령
+            if (front == rear)
                 printf("-1\n");
             else
-                printf("%d\n", stack[top]); // 가장 위의 값 출력
+                printf("%d\n", queue[front]); // 가장 앞의 값 출력
+        } 
+        else if (strcmp(cmd, "back") == 0) { // back 명령
+            if (front == rear)
+                printf("-1\n");
+            else
+                printf("%d\n", queue[rear - 1]); // 가장 뒤의 값 출력
         }
     }
 
